@@ -1,0 +1,73 @@
+This problem was asked by Uber.
+Given an array of integers, return a new array such that each element at index i of the new array is the product of all the numbers in the original array except the one 
+at i.
+
+For example, if our input was [1, 2, 3, 4, 5], the expected output would be [120, 60, 40, 30, 24]. If our input was [3, 2, 1], the expected output would be [2, 3, 6].
+
+Follow-up: what if you can't use division?
+
+Solution
+The easiest approach somebody can think of is, for any array element at index i, take the product of all the other elements of the array excluding the current index and
+store the product for current index i.e. index i in a product array at it’s index
+i.
+This is a very basic and naive approach and would result in a big time complexity as we have to traverse the array n times for filling it, then for each element again
+traverse n-1 elements to compute product. It means a time complexity of order of O(n)+O(n*(n-1)).
+
+
+Efficient approach:
+// C++ implementation of above approach
+#include <bits/stdc++.h>
+using namespace std;
+  
+/* Function to print product array 
+for a given array arr[] of size n */
+void productArray(int arr[], int n)
+{
+  
+    // Base case
+    if (n == 1) {
+        cout << 0;
+        return;
+    }
+  
+    int i, temp = 1;
+  
+    /* Allocate memory for the product array */
+    int* prod = new int[(sizeof(int) * n)];
+  
+    /* Initialize the product array as 1 */
+    memset(prod, 1, n);
+  
+    /* In this loop, temp variable contains product of 
+       elements on left side excluding arr[i] */
+    for (i = 0; i < n; i++) {
+        prod[i] = temp;
+        temp *= arr[i];
+    }
+  
+    /* Initialize temp to 1 
+    for product on right side */
+    temp = 1;
+  
+    /* In this loop, temp variable contains product of 
+       elements on right side excluding arr[i] */
+    for (i = n - 1; i >= 0; i--) {
+        prod[i] *= temp;
+        temp *= arr[i];
+    }
+  
+    /* print the constructed prod array */
+    for (i = 0; i < n; i++)
+        cout << prod[i] << " ";
+  
+    return;
+}
+  
+// Driver Code
+int main()
+{
+    int arr[] = { 10, 3, 5, 6, 2 };
+    int n = sizeof(arr) / sizeof(arr[0]);
+    cout << "The product array is: \n";
+    productArray(arr, n);
+}
